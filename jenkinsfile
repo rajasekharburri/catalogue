@@ -5,6 +5,7 @@ pipeline {
             label 'AGENT-1'
         }
     }
+    //ok
     environment {
         COURSE = "Jenkins"
         appVersion = ""
