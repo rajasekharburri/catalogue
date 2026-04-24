@@ -38,6 +38,15 @@ pipeline {
                 }
             }
         }
+         stage('unit test') {
+            steps {
+                script {
+                    sh """
+                        npm install
+                    """
+                }
+            }
+        }
         stage('Build Image') {
             steps {
                 script{
