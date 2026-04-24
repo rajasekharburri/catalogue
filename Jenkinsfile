@@ -4,6 +4,7 @@ pipeline {
             label 'AGENT-1'
         }
     }
+
     environment {
         COURSE = "Jenkins"
         appVersion = ""
@@ -11,14 +12,14 @@ pipeline {
         PROJECT = "roboshop"
         COMPONENT = "catalogue"
     }
+
     options {
         timeout(time: 10, unit: 'MINUTES') 
         disableConcurrentBuilds()
     }
 
-
-    // This is build sections
     stages {
+
         stage('Read Version') {
             steps {
                 script {
@@ -29,41 +30,33 @@ pipeline {
             }
         }
 
-        stage('install dependencies') {
+        stage('Install Dependencies') {
             steps {
-                script {
-                    sh """
-                        npm install
-                    """
-                }
+                sh "npm install"
             }
         }
-         stage('unit test') {
+
+        stage('Unit Test') {
             steps {
-                script {
-                    sh """
-                        npm install
-                    """
-                }
+                sh "npm install"
             }
         }
-        stage('Sonar Scan'){
+
+        stage('Sonar Scan') {
             environment {
-                def scannerHome = tool 'sonar-8.0'
+                scannerHome = tool 'sonar-8.0'
             }
-         stage('sonar scan') {
             steps {
-                script {
-                    withSonarQubeEnv('sonar-server') {
-                        sh  "${scannerHome}/bin/sonar-scanner" 
-                    }
+                withSonarQubeEnv('sonar-server') {
+                    sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
         }
+
         stage('Build Image') {
             steps {
-                script{
-                    withAWS(region:'us-east-1',credentials:'aws-creds') {
+                script {
+                    withAWS(region:'us-east-1', credentials:'aws-creds') {
                         sh """
                             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
                             docker build -t ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion} .
@@ -74,7 +67,6 @@ pipeline {
                 }
             }
         }
-
     }
 
     post {
@@ -88,7 +80,7 @@ pipeline {
         failure {
             echo 'I will run if failure'
         }
-         aborted {
+        aborted {
             echo 'pipeline is aborted'
         }
     }
