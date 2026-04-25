@@ -44,7 +44,7 @@ pipeline {
 
         stage('Sonar Scan') {
             environment {
-                scannerHome = tool 'sonar-8.0'
+                def scannerHome = tool 'sonar-8.0'
             }
             steps {
                 withSonarQubeEnv('sonar-server') {
@@ -62,7 +62,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Build Image') {
             steps {
                 script {
