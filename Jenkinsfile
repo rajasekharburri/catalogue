@@ -85,18 +85,18 @@ pipeline {
             }
         }
 
-        // stage('Trivy Scan') {
-        //     steps {
-        //         script {
-        //             sh """
-        //                 trivy image \
-        //                 --severity HIGH,CRITICAL,MEDIUM \
-        //                 --exit-code 1 \
-        //                 ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
-        //             """
-        //         }
-        //     }
-        // }
+        stage('Trivy Scan') {
+            steps {
+                script {
+                    sh """
+                        trivy image \
+                        --severity HIGH,CRITICAL,MEDIUM \
+                        --exit-code 1 \
+                        ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${PROJECT}/${COMPONENT}:${appVersion}
+                    """
+                }
+            }
+        }
     }
 
     post {
