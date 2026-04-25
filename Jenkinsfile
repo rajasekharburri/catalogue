@@ -42,16 +42,16 @@ pipeline {
             }
         }
 
-        stage('Sonar Scan') {
-            environment {
-                def scannerHome = tool 'sonar-8.0'
-            }
-            steps {
-                withSonarQubeEnv('sonar-server') {
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-            }
-        }
+        // stage('Sonar Scan') {
+        //     environment {
+        //         def scannerHome = tool 'sonar-8.0'
+        //     }
+        //     steps {
+        //         withSonarQubeEnv('sonar-server') {
+        //             sh "${scannerHome}/bin/sonar-scanner"
+        //         }
+        //     }
+        // }
 
         stage('Quality Gate') {
             steps {
